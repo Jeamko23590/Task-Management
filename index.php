@@ -1,3 +1,4 @@
+<?php session_start(); ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -84,6 +85,14 @@
             </div>
         </div>
 
+        <!-- Display confirmation message -->
+        <?php if (isset($_SESSION['message'])): ?>
+            <div class="alert alert-success">
+                <?php echo $_SESSION['message']; ?>
+                <?php unset($_SESSION['message']); ?>
+            </div>
+        <?php endif; ?>
+
         <!-- Filtering of tasks -->
         <div class="filter-section">
             <form class="row g-3">
@@ -158,7 +167,8 @@
                                 </span>
                             </td>
                             <td>
-                                <!-- actions buttons to be added here like delete -->
+                                <a href="edit_task.php?id=<?php echo $row['id']; ?>" class="btn btn-warning">Edit</a>
+                                <a href="delete_task.php?id=<?php echo $row['id']; ?>" class="btn btn-danger delete-link">Delete</a>
                             </td>
                         </tr>
                     <?php } ?>
@@ -178,7 +188,17 @@
                 });
             });
         });
-    </script>
 
+        // Delete Confirmation Prompt
+        document.addEventListener("DOMContentLoaded", function () {
+            document.querySelectorAll(".delete-link").forEach(link => {
+                link.addEventListener("click", function (event) {
+                    if (!confirm("Are you sure you want to delete this task?")) {
+                        event.preventDefault();
+                    }
+                });
+            });
+        });
+    </script>
 </body>
 </html>
