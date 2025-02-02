@@ -1,3 +1,4 @@
+<?php session_start(); ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -158,6 +159,7 @@
                                 </span>
                             </td>
                             <td>
+                                <a href="edit_task.php?id=<?php echo $row['id']; ?>" class="btn btn-warning">Edit</a>
                                 <!-- actions buttons to be added here like delete -->
                             </td>
                         </tr>
@@ -166,6 +168,13 @@
             </table>
         </div>
     </div>
+
+    <?php if (isset($_SESSION['message'])): ?>
+        <div class="alert alert-success">
+            <?php echo $_SESSION['message']; ?>
+            <?php unset($_SESSION['message']); ?>
+        </div>
+    <?php endif; ?>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 

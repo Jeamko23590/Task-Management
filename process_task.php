@@ -28,6 +28,8 @@
 
         // Execute the query and redirect to the main page if successful
         if (mysqli_query($conn, $query)) {
+            // Add confirmation message
+            $_SESSION['message'] = "Task updated successfully!";
             header('Location: index.php');
         } else {
             // Display error message if query fails
