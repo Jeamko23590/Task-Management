@@ -14,8 +14,24 @@ $task = mysqli_fetch_assoc($result);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Task - Todo Management System</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .navbar { background-color: #2c3e50; }
+        .navbar-brand { color: white !important; }
+        .form-container { max-width: 800px; margin: 0 auto; }
+    </style>
 </head>
 <body>
+
+    <!-- Header -->
+    <nav class="navbar navbar-expand-lg navbar-dark mb-4">
+        <div class="container">
+            <a class="navbar-brand" href="index.php">
+                <i class="fas fa-check-double me-2"></i>Todo Management System
+            </a>
+        </div>
+    </nav>
+    
     <div class="container">
         <h2 class="mb-4">Edit Task</h2>
         <form action="process_task.php" method="POST">
