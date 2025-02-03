@@ -1,5 +1,6 @@
 <?php
     include 'db_connect.php';
+    session_start(); // Start the session to use session variables
 
     // Check if the form is submitted
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -28,7 +29,10 @@
 
         // Execute the query and redirect to the main page if successful
         if (mysqli_query($conn, $query)) {
+            // Add confirmation message
+            $_SESSION['message'] = "Task updated successfully!";
             header('Location: index.php');
+            exit(); // Ensure no further code is executed after redirect
         } else {
             // Display error message if query fails
             echo "Error: " . mysqli_error($conn);
