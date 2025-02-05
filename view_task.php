@@ -5,6 +5,10 @@
     $query = "SELECT * FROM tasks WHERE id = $id";
     $result = mysqli_query($conn, $query);
     $task = mysqli_fetch_assoc($result);
+
+    // Fetch comments for the task
+    $comments_query = "SELECT * FROM comments WHERE task_id = $id ORDER BY created_at ASC";
+    $comments_result = mysqli_query($conn, $comments_query);
 ?>
 
 
@@ -145,6 +149,30 @@
                     </span>
                 </div>
             </div>
+
+            <!-- Comments Section -->
+            <h3>Comments</h3>
+            <div id="comments-section">
+                <?php while ($comment = mysqli_fetch_assoc($comments_result)): ?>
+                    <div class="comment">
+                        <p><?php echo nl2br(htmlspecialchars($comment['comment'])); ?></p>
+                        <small>Posted on <?php echo date('M d, Y H:i', strtotime($comment['created_at'])); ?></small>
+                        <!-- Add edit and delete buttons here -->
+                        <a href="edit_comment.php?id=<?php echo $comment['id']; ?>" class="btn btn-warning btn-sm">Edit</a>
+                        <a href="delete_comment.php?id=<?php echo $comment['id']; ?>" class="btn btn-danger btn-sm">Delete</a>
+                    </div>
+                <?php endwhile; ?>
+            </div>
+
+            <!-- Add Comment Form -->
+            <form action="process_comment.php" method="POST">
+                <input type="hidden" name="task_id" value="<?php echo $id; ?>">
+                <div class="mb-3">
+                    <label for="comment" class="form-label">Add a Comment</label>
+                    <textarea class="form-control" id="comment" name="comment" rows="3" required></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Submit Comment</button>
+            </form>
         </div>
     </div>
 
