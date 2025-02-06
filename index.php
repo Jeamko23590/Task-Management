@@ -63,7 +63,6 @@
         }
     </style>
 </head>
-git status
 
 <body>
     <!-- Header -->
