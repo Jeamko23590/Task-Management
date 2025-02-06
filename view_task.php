@@ -9,8 +9,30 @@
     // Fetch comments for the task
     $comments_query = "SELECT * FROM comments WHERE task_id = $id ORDER BY created_at ASC";
     $comments_result = mysqli_query($conn, $comments_query);
-?>
 
+    // Predetermined array of users
+    $users = [
+        ['id' => 1, 'name' => 'Aila Niala'],
+        ['id' => 2, 'name' => 'Alexander Flores'],
+        ['id' => 3, 'name' => 'Andrei Asnan'],
+        ['id' => 4, 'name' => 'Carl Manuel Gonzales'],
+        ['id' => 5, 'name' => 'Carla Tabafunda']
+    ];
+
+    // If a form is submitted, update the task with the selected assignee
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $assignee_id = $_POST['assignee_id'];
+        
+        // Update the task with the selected assignee
+        $update_query = "UPDATE tasks SET assignee_id = $assignee_id WHERE id = $id";
+        if (mysqli_query($conn, $update_query)) {
+            // Optionally, send a notification (for now we just display a message)
+            echo "Notification sent to " . $users[$assignee_id - 1]['name'] . ".";
+        } else {
+            echo "Error assigning task: " . mysqli_error($conn);
+        }
+    }
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -149,6 +171,23 @@
                     </span>
                 </div>
             </div>
+
+            <!-- Task Assignee Form -->
+            <h3>Assign Task</h3>
+            <form action="" method="POST">
+                <div class="mb-3">
+                    <label for="assignee" class="form-label">Select Assignee</label>
+                    <select class="form-select" id="assignee" name="assignee_id">
+                        <option value="">Select Assignee</option>
+                        <?php foreach ($users as $user): ?>
+                            <option value="<?php echo $user['id']; ?>" <?php echo $user['id'] == $task['assignee_id'] ? 'selected' : ''; ?>>
+                                <?php echo $user['name']; ?>
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary">Assign Task</button>
+            </form>
 
             <!-- Comments Section -->
             <h3>Comments</h3>

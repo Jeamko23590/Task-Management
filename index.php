@@ -4,9 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Todo Management System</title>   
-
+    <title>Todo Management System</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
@@ -16,7 +14,7 @@
         .add-task-btn { background-color: #27ae60; border-color: #27ae60; }
         .add-task-btn:hover { background-color: #219a52; border-color: #219a52; }
         .filter-section { background-color: #f8f9fa; padding: 15px; border-radius: 5px; margin-bottom: 20px; }
-        
+
         .priority-badge {
             padding: 5px 10px;
             border-radius: 15px;
@@ -40,7 +38,7 @@
             color: #2e7d32;
             border: 1px solid #a5d6a7;
         }
-        
+
         .status-badge {
             padding: 5px 10px;
             border-radius: 15px;
@@ -65,9 +63,9 @@
         }
     </style>
 </head>
+git status
 
 <body>
-
     <!-- Header -->
     <nav class="navbar navbar-expand-lg navbar-dark mb-4">
         <div class="container">
@@ -126,6 +124,7 @@
                         <th>Due Date</th>
                         <th>Priority</th>
                         <th>Status</th>
+                        <th>Assignee</th> <!-- Added column for Assignee -->
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -152,25 +151,34 @@
                     $result = mysqli_query($conn, $query);
                     
                     while ($row = mysqli_fetch_assoc($result)) {
-                        ?>
-                        <tr data-href="view_task.php?id=<?php echo $row['id']; ?>" class="clickable-row">
-                            <td><?php echo htmlspecialchars($row['title']); ?></td>
-                            <td><?php echo date('M d, Y', strtotime($row['due_date'])); ?></td>
-                            <td>
-                                <span class="priority-badge priority-<?php echo strtolower($row['priority']); ?>">
-                                    <?php echo $row['priority']; ?>
-                                </span>
-                            </td>
-                            <td>
-                                <span class="status-badge status-<?php echo str_replace('_', '-', $row['status']); ?>">
-                                    <?php echo ucwords(str_replace('_', ' ', $row['status'])); ?>
-                                </span>
-                            </td>
-                            <td>
-                                <a href="edit_task.php?id=<?php echo $row['id']; ?>" class="btn btn-warning">Edit</a>
-                                <a href="delete_task.php?id=<?php echo $row['id']; ?>" class="btn btn-danger delete-link">Delete</a>
-                            </td>
-                        </tr>
+                        // Fetch assignee
+                        $assignee_name = 'No assignee';
+                        if ($row['assignee_id']) {
+                            $assignee_query = "SELECT name FROM users WHERE id = {$row['assignee_id']}";
+                            $assignee_result = mysqli_query($conn, $assignee_query);
+                            $assignee = mysqli_fetch_assoc($assignee_result);
+                            $assignee_name = $assignee['name'];
+                        }
+                    ?>
+                    <tr data-href="view_task.php?id=<?php echo $row['id']; ?>" class="clickable-row">
+                        <td><?php echo htmlspecialchars($row['title']); ?></td>
+                        <td><?php echo date('M d, Y', strtotime($row['due_date'])); ?></td>
+                        <td>
+                            <span class="priority-badge priority-<?php echo strtolower($row['priority']); ?>">
+                                <?php echo $row['priority']; ?>
+                            </span>
+                        </td>
+                        <td>
+                            <span class="status-badge status-<?php echo str_replace('_', '-', $row['status']); ?>">
+                                <?php echo ucwords(str_replace('_', ' ', $row['status'])); ?>
+                            </span>
+                        </td>
+                        <td><?php echo $assignee_name; ?></td> <!-- Display assignee name -->
+                        <td>
+                            <a href="edit_task.php?id=<?php echo $row['id']; ?>" class="btn btn-warning">Edit</a>
+                            <a href="delete_task.php?id=<?php echo $row['id']; ?>" class="btn btn-danger delete-link">Delete</a>
+                        </td>
+                    </tr>
                     <?php } ?>
                 </tbody>
             </table>
