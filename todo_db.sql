@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 06, 2025 at 06:43 AM
+-- Generation Time: Feb 06, 2025 at 04:48 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -35,6 +35,16 @@ CREATE TABLE `comments` (
   `user_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `comments`
+--
+
+INSERT INTO `comments` (`id`, `task_id`, `comment`, `created_at`, `user_id`) VALUES
+(2, 5, 'hello world', '2025-02-06 14:21:40', 1),
+(3, 5, 'hi', '2025-02-06 14:29:43', 1),
+(4, 2, 'ASDASDSA', '2025-02-06 15:08:09', 1),
+(5, 2, 'SDASDasdasfasfasfasfasf', '2025-02-06 15:08:17', 1);
+
 -- --------------------------------------------------------
 
 --
@@ -59,8 +69,10 @@ CREATE TABLE `tasks` (
 
 INSERT INTO `tasks` (`id`, `title`, `description`, `due_date`, `priority`, `status`, `created_at`, `updated_at`, `assignee_id`) VALUES
 (1, 'CCS112 Case Study ', '- diagnosis form (editable)\r\n- medical history modal\r\n- summarize assessment of user (with graphs)', '2025-02-03', 'High', 'in_progress', '2025-02-02 02:21:46', '2025-02-06 05:37:42', 5),
-(2, 'CCS 112 Activity', '- create new task\r\n- task viewing', '2025-02-02', 'Medium', 'in_progress', '2025-02-02 02:25:30', '2025-02-06 05:43:04', 2),
-(3, 'Create a Database', 'Just create the database of the registration', '2025-02-20', 'High', 'todo', '2025-02-06 05:38:13', '2025-02-06 05:38:17', 4);
+(2, 'CCS 112 Activity', '- create new task\r\n- task viewing', '2025-02-02', 'Medium', 'in_progress', '2025-02-02 02:25:30', '2025-02-06 15:30:33', 2),
+(3, 'Create a Database', 'Just create the database of the registration', '2025-02-20', 'Low', 'todo', '2025-02-06 05:38:13', '2025-02-06 14:15:45', 4),
+(4, 'Task UI Design', '- create an initial design \r\n- use html, bootstrap, and JS', '2025-02-07', 'High', 'in_progress', '2025-02-06 14:11:41', '2025-02-06 15:30:52', 1),
+(5, 'QA All the activities', '- check if all features are working\r\n- note the issues encountered', '2025-02-10', 'High', 'in_progress', '2025-02-06 14:17:14', '2025-02-06 15:46:23', 3);
 
 -- --------------------------------------------------------
 
@@ -97,11 +109,11 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `name`) VALUES
-(1, 'Aila Niala'),
-(2, 'Alexander Flores'),
-(3, 'Andrei Asnan'),
-(4, 'Carl Manuel Gonzales'),
-(5, 'Carla Tabafunda');
+(1, 'Obrey Monter'),
+(2, 'Eden Nataya'),
+(3, 'Aila Niala'),
+(4, 'Niko Nositera'),
+(5, 'Prince Nuguid');
 
 --
 -- Indexes for dumped tables
@@ -141,13 +153,13 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `comments`
 --
 ALTER TABLE `comments`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `tasks`
 --
 ALTER TABLE `tasks`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `users`
