@@ -19,6 +19,7 @@ $task = mysqli_fetch_assoc($result);
         .navbar { background-color: #2c3e50; }
         .navbar-brand { color: white !important; }
         .form-container { max-width: 800px; margin: 0 auto; }
+        .form-control { font-size: 16px; }
     </style>
 </head>
 <body>
@@ -38,19 +39,19 @@ $task = mysqli_fetch_assoc($result);
             <input type="hidden" name="update" value="1">
             <input type="hidden" name="id" value="<?php echo $task['id']; ?>">
             <div class="mb-3">
-                <label for="title" class="form-label">Task Title</label>
+                <label for="title" class="form-label fw-semibold">Task Title</label>
                 <input type="text" class="form-control" id="title" name="title" value="<?php echo htmlspecialchars($task['title']); ?>" required>
             </div>
             <div class="mb-3">
-                <label for="description" class="form-label">Description</label>
+                <label for="description" class="form-label fw-semibold">Description</label>
                 <textarea class="form-control" id="description" name="description" rows="3"><?php echo htmlspecialchars($task['description']); ?></textarea>
             </div>
             <div class="mb-3">
-                <label for="due_date" class="form-label">Due Date</label>
+                <label for="due_date" class="form-label fw-semibold">Due Date</label>
                 <input type="date" class="form-control" id="due_date" name="due_date" value="<?php echo $task['due_date']; ?>" required>
             </div>
             <div class="mb-3">
-                <label for="priority" class="form-label">Priority</label>
+                <label for="priority" class="form-label fw-semibold">Priority</label>
                 <select class="form-select" id="priority" name="priority" required>
                     <option value="Low" <?php if($task['priority'] == 'Low') echo 'selected'; ?>>Low</option>
                     <option value="Medium" <?php if($task['priority'] == 'Medium') echo 'selected'; ?>>Medium</option>
@@ -58,7 +59,7 @@ $task = mysqli_fetch_assoc($result);
                 </select>
             </div>
             <div class="mb-3">
-                <label for="status" class="form-label">Status</label>
+                <label for="status" class="form-label fw-semibold">Status</label>
                 <select class="form-select" id="status" name="status" required>
                     <option value="todo" <?php if($task['status'] == 'todo') echo 'selected'; ?>>To Do</option>
                     <option value="in_progress" <?php if($task['status'] == 'in_progress') echo 'selected'; ?>>In Progress</option>
@@ -66,8 +67,8 @@ $task = mysqli_fetch_assoc($result);
                 </select>
             </div>
             <div class="mb-3">
-                <button type="submit" class="btn btn-primary">Save Changes</button>
-                <a href="index.php" class="btn btn-secondary">Cancel</a>
+                <button type="submit" class="btn btn-primary btn-sm">Save Changes</button>
+                <a href="index.php" class="btn btn-secondary btn-sm">Cancel</a>
             </div>
         </form>
     </div>

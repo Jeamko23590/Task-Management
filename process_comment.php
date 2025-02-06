@@ -5,7 +5,7 @@ session_start();
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $task_id = intval($_POST['task_id']);
     $comment = mysqli_real_escape_string($conn, $_POST['comment']);
-    $user_id = 1; // Replace with actual user ID from session or authentication system
+    $user_id = 1; // For now, we'll use a fixed user ID
 
     $query = "INSERT INTO comments (task_id, comment, user_id) VALUES ('$task_id', '$comment', '$user_id')";
     

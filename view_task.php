@@ -12,12 +12,14 @@
 
     // Predetermined array of users
     $users = [
-        ['id' => 1, 'name' => 'Aila Niala'],
-        ['id' => 2, 'name' => 'Alexander Flores'],
-        ['id' => 3, 'name' => 'Andrei Asnan'],
-        ['id' => 4, 'name' => 'Carl Manuel Gonzales'],
-        ['id' => 5, 'name' => 'Carla Tabafunda']
+        ['id' => 1, 'name' => 'Obrey Monter'],
+        ['id' => 2, 'name' => 'Eden Nataya'],
+        ['id' => 3, 'name' => 'Aila Niala'],
+        ['id' => 4, 'name' => 'Niko Nositera'],
+        ['id' => 5, 'name' => 'Prince Nuguid']
     ];
+
+    $notification = ''; // Initialize notification message
 
     // If a form is submitted, update the task with the selected assignee
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -25,11 +27,11 @@
         
         // Update the task with the selected assignee
         $update_query = "UPDATE tasks SET assignee_id = $assignee_id WHERE id = $id";
-        if (mysqli_query($conn, $update_query)) {
+        if (mysqli_query($conn, $update_query)) {            
             // Optionally, send a notification (for now we just display a message)
-            echo "Notification sent to " . $users[$assignee_id - 1]['name'] . ".";
+            $notification = "<div class='alert alert-success mt-3 p-2'>Notification sent to " . $users[$assignee_id - 1]['name'] . ".</div>";
         } else {
-            echo "Error assigning task: " . mysqli_error($conn);
+            $notification = "<div class='alert alert-danger mt-3 p-2'>Error assigning task: " . mysqli_error($conn) . "</div>";
         }
     }
 ?>
@@ -39,10 +41,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>View Task - Todo Management System</title>
-
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <title>View Task - Todo Management System</title>    
 
     <style>
         body {
@@ -68,12 +69,12 @@
             color: #2c3e50;
         }
         .task-label {
-            font-weight: 600;
+            font-weight: 700;
             color: #555;
             font-size: 16px;
         }
         .task-value {
-            font-size: 18px;
+            font-size: 16px;
             color: #333;
         }
         .badge {
@@ -132,15 +133,15 @@
         <div class="task-container">
 
             <!-- Back button -->
-            <a href="index.php" class="btn btn-secondary back-btn">
+            <a href="index.php" class="btn btn-secondary back-btn mt-1">
                 <i class="fas fa-arrow-left"></i> Back to Dashboard
             </a>
             <br><br><br>
 
             <!-- fetch title -->
-            <h2 class="task-title mb-4">
+            <h1 class="task-title mb-4">
                 <i class="fas fa-tasks me-2"></i><?php echo htmlspecialchars($task['title']); ?>
-            </h2>
+            </h1>
 
             <!-- fetch description -->
             <div class="mb-3">
@@ -150,30 +151,32 @@
 
             <!-- due date, prio, and status -->
             <div class="row">
-                <div class="col-md-6 mb-3">
+                <div class="col-md-4 mb-3">
                     <span class="task-label">Due Date:</span>
                     <p class="task-value"><i class="fas fa-calendar-alt me-1"></i>
                         <?php echo date('M d, Y', strtotime($task['due_date'])); ?>
                     </p>
                 </div>
 
-                <div class="col-md-6 mb-3">
-                    <span class="task-label">Priority:</span>
-                    <span class="badge priority-<?php echo strtolower($task['priority']); ?>">
+                <div class="col-md-4 mb-3">
+                    <span class="task-label">Priority:</span><br>
+                    <span class="badge priority-<?php echo strtolower($task['priority']); ?> p-2 pb-1 pt-1">
                         <?php echo $task['priority']; ?>
                     </span>
                 </div>
 
-                <div class="col-md-6 mb-3">
-                    <span class="task-label">Status:</span>
-                    <span class="badge status-<?php echo str_replace('_', '-', $task['status']); ?>">
+                <div class="col-md-4 mb-3">
+                    <span class="task-label">Status:</span><br>
+                    <span class="badge status-<?php echo str_replace('_', '-', $task['status']); ?> p-2 pb-1 pt-1">
                         <?php echo ucwords(str_replace('_', ' ', $task['status'])); ?>
                     </span>
                 </div>
+
             </div>
+            <br>
 
             <!-- Task Assignee Form -->
-            <h3>Assign Task</h3>
+            <h4>Assign Task</h4>
             <form action="" method="POST">
                 <div class="mb-3">
                     <label for="assignee" class="form-label">Select Assignee</label>
@@ -186,31 +189,43 @@
                         <?php endforeach; ?>
                     </select>
                 </div>
-                <button type="submit" class="btn btn-primary">Assign Task</button>
+                <?php echo $notification; ?> 
+                <button type="submit" class="btn btn-primary btn-sm">Assign Task</button>
             </form>
 
             <!-- Comments Section -->
-            <h3>Comments</h3>
+            <br><br>
+            <h4>Comments</h4>
             <div id="comments-section">
                 <?php while ($comment = mysqli_fetch_assoc($comments_result)): ?>
-                    <div class="comment">
-                        <p><?php echo nl2br(htmlspecialchars($comment['comment'])); ?></p>
-                        <small>Posted on <?php echo date('M d, Y H:i', strtotime($comment['created_at'])); ?></small>
-                        <!-- Add edit and delete buttons here -->
+                    <!-- <div class="comment">
+                        <p><?php echo nl2br(htmlspecialchars($comment['comment'])); ?> 
+                            <small class="text-sm-end">Posted on <?php echo date('M d, Y h:i A', strtotime($comment['created_at'])); ?></small>
+                        
+                        Add edit and delete buttons here
                         <a href="edit_comment.php?id=<?php echo $comment['id']; ?>" class="btn btn-warning btn-sm">Edit</a>
-                        <a href="delete_comment.php?id=<?php echo $comment['id']; ?>" class="btn btn-danger btn-sm">Delete</a>
+                        <a href="delete_comment.php?id=<?php echo $comment['id']; ?>" class="btn btn-danger btn-sm">Delete</a><br><br></p>
+                    </div> -->
+
+                    <div class="comment border p-2 mb-2">
+                        <p><?php echo nl2br(htmlspecialchars($comment['comment'])); ?></p>
+                        <div class="d-flex justify-content-end align-items-center">
+                            <small class="text-muted me-3">Posted on <?php echo date('M d, Y h:i A', strtotime($comment['created_at'])); ?></small>
+                            <a href="edit_comment.php?id=<?php echo $comment['id']; ?>" class="btn btn-warning btn-sm me-2">Edit</a>
+                            <a href="delete_comment.php?id=<?php echo $comment['id']; ?>" class="btn btn-danger btn-sm">Delete</a>
+                        </div>
                     </div>
                 <?php endwhile; ?>
             </div>
 
             <!-- Add Comment Form -->
+             <br>
             <form action="process_comment.php" method="POST">
                 <input type="hidden" name="task_id" value="<?php echo $id; ?>">
                 <div class="mb-3">
-                    <label for="comment" class="form-label">Add a Comment</label>
-                    <textarea class="form-control" id="comment" name="comment" rows="3" required></textarea>
+                    <textarea class="form-control" id="comment" name="comment" rows="3" placeholder="Add comment here" required></textarea>
                 </div>
-                <button type="submit" class="btn btn-primary">Submit Comment</button>
+                <button type="submit" class="btn btn-primary btn-sm">Submit Comment</button>
             </form>
         </div>
     </div>
